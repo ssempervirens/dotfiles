@@ -40,6 +40,12 @@ if test ! $(which rustc); then
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 fi
 
+# check if tree is installed and install if not
+if test ! $(which tree); then
+    echo "Installing tree..."
+    brew install tree
+fi
+
 DOTFILES_DIRECTORY=~/dotfiles
 VIMRC_FILE="$DOTFILES_DIRECTORY/vim/.vimrc"
 ZSHRC_FILE="$DOTFILES_DIRECTORY/zsh/.zshrc"
