@@ -95,15 +95,15 @@ pyenv global $PYTHON_VERSION
 TARGET_FONT_DIR="/Library/Fonts"
 
 # check if font source directory exists
-if [ -d "~/dotfiles/iterm2/JetBrainsMono" ]; then
-    echo "Source directory found. Proceeding with copying files..."
+if [ -d "$HOME/dotfiles/iterm2/JetBrainsMono" ]; then
+    echo "Font source directory found. Proceeding with copying files..."
 else
-    echo "Source directory not found. Please check the path and try again."
+    echo "Font source directory not found. Please check the path and try again."
     exit 1
 fi
 
 # copy JetBrainsMono fonts to target directory
-sudo cp -R "~/dotfiles/iterm2/JetBrainsMono/*" "$TARGET_FONT_DIR"
+sudo cp -R "$HOME/dotfiles/iterm2/JetBrainsMono/*" "$TARGET_FONT_DIR"
 
 # generate SSH key pair if not exists 
 SSH_DIR="$HOME/.ssh"
