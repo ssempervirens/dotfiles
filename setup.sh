@@ -1,8 +1,15 @@
+#!/bin/bash
+
 # check if Homebrew is installed and install if not
 if test ! $(which brew); then
     echo "Installing Homebrew..."
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
+    eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
+
+# Add Homebrew to PATH
+eval "$(/opt/homebrew/bin/brew shellenv)"
 
 # install VSCode, iTerm2, pipenv if not exists
 if test ! $(which code); then
@@ -10,8 +17,7 @@ if test ! $(which code); then
     brew install --cask visual-studio-code
 fi
 
-
-if test ! $(which iterm); then
+if test ! $(which iterm2); then
     echo "Installing iTerm2..."
     brew install --cask iterm2
 fi
@@ -22,16 +28,21 @@ if test ! $(which pipenv); then
 fi
 
 # install pip and jupyter notebooks if not exists
+if test ! $(which python3); then
+    echo "Installing Python..."
+    brew install python
+fi
+
 if test ! $(which pip); then
     echo "Installing pip..."
     curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
-    python get-pip.py
+    python3 get-pip.py
 fi
 
 if test ! $(which jupyter); then
     echo "Installing Jupyter..."
-    python -m pip install jupyter
-    python -m ipykernel install --user
+    python3 -m pip install jupyter
+    python3 -m ipykernel install --user
 fi
 
 # install Rust if not exists
@@ -77,7 +88,10 @@ echo "Symlink creation complete"
 PYTHON_VERSION="3.8.10"
 
 # check if pyenv is installed
-command -v pyenv >/dev/null 2>&1 || { echo >&2 "Pyenv is not installed. Installing it now..."; curl https://pyenv.run | bash; }
+if ! command -v pyenv >/dev/null 2>&1; then
+    echo "Pyenv is not installed. Installing it now..."
+    curl https://pyenv.run | bash
+fi
 
 # make sure .zshrc has necessary pyenv configuration
 if ! grep -q 'pyenv init' ~/.zshrc; then
